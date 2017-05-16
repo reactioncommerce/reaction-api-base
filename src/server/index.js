@@ -89,7 +89,8 @@ export default async function startServer() {
     onSubscribe(msg, params) {
       return Object.assign({}, params, { context: Object.assign({}, context) });
     }
-  },
-  websocketServer
-  );
+  }, {
+    server: websocketServer,
+    path: '/'
+  });
 }

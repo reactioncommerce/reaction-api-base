@@ -6,7 +6,7 @@ const pubsub = new PubSub();
 const subscriptionManager = new SubscriptionManager({
   schema,
   pubsub,
-  setupFunctions: {},
+  setupFunctions: {}
 });
 
 export { subscriptionManager, pubsub };
