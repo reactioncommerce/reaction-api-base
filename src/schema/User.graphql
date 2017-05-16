@@ -1,0 +1,32 @@
+type User {
+  _id: ObjID!
+  email: String!
+  createdAt: Float!
+  updatedAt: Float!
+}
+
+type Query {
+  users(lastCreatedAt: Float, limit: Int): [User!]
+  user(_id: ObjID!): User
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(_id: ObjID!, input: UpdateUserInput!): User
+  removeUser(_id: ObjID!): Boolean
+}
+
+type Subscription {
+  userCreated: User
+  userUpdated: User
+  userRemoved: ObjID
+}
