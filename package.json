@@ -2,12 +2,16 @@
   "name": "skeletor",
   "version": "0.1.0",
   "description": "Skeletor GraphQL API skeleton",
+  "author": "Jeremy Shimko <jeremy@reactioncommerce.com>",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=6.0.0"
   },
-  "private": true,
-  "author": "Jeremy Shimko <jeremy@reactioncommerce.com>",
-  "license": "GPL-3.0",
+  "scripts": {
+    "build": "rimraf dist && babel src -d dist --copy-files",
+    "serve": "npm run build && node dist/index.js",
+    "start": "nodemon --watch src --exec babel-node src/index.js"
+  },
   "devDependencies": {
     "babel-cli": "6.16.0",
     "babel-core": "6.17.0",
