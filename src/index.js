@@ -3,14 +3,6 @@ import path from 'path';
 import startServer from './server';
 import Logger from './server/logger';
 
-// only import mongodb-prebuilt and nodemon in development
-let Mongod;
-let nodemon;
-if (process.env.NODE_ENV !== 'production') {
-  Mongod = require('mongodb-prebuilt').MongodHelper;
-  nodemon = require('nodemon');
-}
-
 // set the development database location
 const dbpath = path.join('../', 'db');
 
@@ -39,6 +31,8 @@ if (!MONGO_URL) {
   if (!fs.existsSync(dbpath)) {
     fs.mkdirSync(dbpath);
   }
+
+  const Mongod = require('mongodb-prebuilt').MongodHelper;
 
   const mongod = new Mongod([
     '--port', MONGO_PORT,
@@ -73,6 +67,7 @@ process.once('SIGINT', function () {
 // And the exit event shuts down the child.
 process.once('exit', function () {
   if (process.env.NODE_ENV !== 'production') {
+    const nodemon = require('nodemon');
     nodemon.emit('SIGINT');
   }
 });
