@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import nodemon from 'nodemon';
-import { MongodHelper } from 'mongodb-prebuilt';
 import startServer from './server';
 import Logger from './server/logger';
+
+if (process.env.NODE_ENV !== 'production') {
+  const { MongodHelper } = require('mongodb-prebuilt');
+  const nodemon = require('nodemon');
+}
 
 // set the development database location
 const dbpath = path.join('../', 'db');
@@ -24,6 +27,12 @@ function startApp() {
 
 // start a local development database if no MONGO_URL provided
 if (!MONGO_URL) {
+  // an external database is required in production
+  if (process.env.NODE_ENV === 'production') {
+    Logger.error('A MONGO_URL must be provided in production');
+    process.exit(1);
+  }
+
   if (!fs.existsSync(dbpath)) {
     fs.mkdirSync(dbpath);
   }
@@ -49,7 +58,7 @@ if (!MONGO_URL) {
 }
 
 // Ensure stopping our parent process will properly kill nodemon's process
-// Ala https://www.exratione.com/2013/05/die-child-process-die/
+// https://www.exratione.com/2013/05/die-child-process-die/
 
 // SIGTERM AND SIGINT will trigger the exit event.
 process.once('SIGTERM', function () {
@@ -60,5 +69,7 @@ process.once('SIGINT', function () {
 });
 // And the exit event shuts down the child.
 process.once('exit', function () {
-  nodemon.emit('SIGINT');
+  if (process.env.NODE_ENV !== 'production') {
+    nodemon.emit('SIGINT');
+  }
 });
