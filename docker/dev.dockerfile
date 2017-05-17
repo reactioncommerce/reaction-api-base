@@ -1,5 +1,5 @@
-# This caches all of the build tools and doesn't
-# uninstall them after the app build has completed.
+# This installs/caches mongodb-prebuilt and all of the build tools
+# and it doesn't uninstall them after the app build has completed.
 # After the first run, this allows much faster builds
 # that are convenient in development, but the image is more
 # than 500MB larger compared to the image from the production
@@ -19,7 +19,9 @@ RUN yarn
 
 # add the rest of the app and build it
 COPY . $APP_SOURCE_DIR
-RUN npm run build
+RUN npm run build && yarn --prod
+
+ENV NODE_ENV production
 
 EXPOSE 3000
 EXPOSE 3001

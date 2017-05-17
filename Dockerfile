@@ -10,6 +10,8 @@ COPY . $APP_SOURCE_DIR
 RUN $APP_SOURCE_DIR/docker/scripts/install.sh && \
     $APP_SOURCE_DIR/docker/scripts/cleanup.sh
 
+ENV NODE_ENV production
+
 EXPOSE 3000
 EXPOSE 3001
 

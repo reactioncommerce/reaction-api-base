@@ -12,3 +12,7 @@ yarn
 printf "\n[-] Building app...\n\n"
 
 npm run build
+
+printf "\n[-] Pruning build dependencies...\n\n"
+
+yarn --prod
