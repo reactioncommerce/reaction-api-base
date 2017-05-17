@@ -3,9 +3,12 @@ import path from 'path';
 import startServer from './server';
 import Logger from './server/logger';
 
+// only import mongodb-prebuilt and nodemon in development
+let Mongod;
+let nodemon;
 if (process.env.NODE_ENV !== 'production') {
-  const { MongodHelper } = require('mongodb-prebuilt');
-  const nodemon = require('nodemon');
+  Mongod = require('mongodb-prebuilt').MongodHelper;
+  nodemon = require('nodemon');
 }
 
 // set the development database location
@@ -37,7 +40,7 @@ if (!MONGO_URL) {
     fs.mkdirSync(dbpath);
   }
 
-  const mongod = new MongodHelper([
+  const mongod = new Mongod([
     '--port', MONGO_PORT,
     '--dbpath', dbpath
   ]);
