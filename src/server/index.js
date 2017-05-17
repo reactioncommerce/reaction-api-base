@@ -43,6 +43,11 @@ export default async function startServer() {
 
   app.use('/graphql', (req, res, next) => {
     passport.authenticate('jwt', { session: false }, (err, user) => {
+      // if (!user) {
+      //   res.status(403);
+      //   res.json({ error: 'Not authorized' });
+      //   return Logger.error('Not authorized');
+      // }
       graphqlExpress(() => {
         // Get the query, the same way express-graphql does it
         // https://github.com/graphql/express-graphql/blob/3fa6e68582d6d933d37fa9e841da5d2aa39261cd/src/index.js#L257
@@ -79,7 +84,7 @@ export default async function startServer() {
   });
 
   websocketServer.listen(WS_PORT, () => Logger.info(
-    `Websocket server is now running on http://localhost:${WS_PORT}`
+    `Websocket server is now running on ws://localhost:${WS_PORT}`
   ));
 
   new SubscriptionServer({
