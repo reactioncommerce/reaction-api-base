@@ -11,7 +11,7 @@ import Logger from './logger';
 
 import typeDefs from '../schema';
 import resolvers from '../resolvers';
-import addModelsToContext from '../model';
+import loadModelsWithContext from '../model';
 import authenticate from './authenticate';
 
 import { pubsub, subscriptionManager } from './subscriptions';
@@ -35,7 +35,7 @@ export default async function startServer() {
   app.use(bodyParser.json());
 
   app.use((req, res, next) => {
-    req.context = addModelsToContext({ db, pubsub });
+    req.context = loadModelsWithContext({ db, pubsub });
     next();
   });
 

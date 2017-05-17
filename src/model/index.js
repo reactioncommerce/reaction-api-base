@@ -4,10 +4,10 @@ const models = {
   Users
 };
 
-export default function addModelsToContext(context) {
+export default function loadModelsWithContext(context) {
   const newContext = Object.assign({}, context);
   Object.keys(models).forEach((key) => {
-    newContext[key] = new models[key](newContext);
+    newContext[key] = new models[key](key.toLowerCase(), newContext);
   });
   return newContext;
 }
