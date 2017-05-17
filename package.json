@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "rimraf dist && babel src -d dist --copy-files",
-    "serve": "npm run build && node dist/index.js",
+    "serve": "NODE_ENV=production node dist/index.js",
     "start": "nodemon --watch src --exec 'npm run build && node dist/index.js'"
   },
   "devDependencies": {
