@@ -79,7 +79,7 @@ export default async function startServer() {
   });
 
   websocketServer.listen(WS_PORT, () => Logger.info(
-    `Websocket Server is now running on http://localhost:${WS_PORT}`
+    `Websocket server is now running on http://localhost:${WS_PORT}`
   ));
 
   new SubscriptionServer({
