@@ -1,0 +1,14 @@
+
+skeletor:
+  image: reactioncommerce/skeletor:latest
+  ports:
+    - 3000:3000
+    - 3001:3001
+  links:
+    - mongo
+  environment:
+    MONGO_URL: "mongodb://mongo:27017/api"
+
+mongo:
+  image: mongo:latest
+  command: mongod --storageEngine=wiredTiger
