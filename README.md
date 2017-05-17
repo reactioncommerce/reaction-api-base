@@ -29,17 +29,13 @@ yarn start
 
 The following services should now be available:
 
-**GraphQL API**
-<http://localhost:3000/graphql>
+**GraphQL API** - <http://localhost:3000/graphql>
 
-**GraphiQL UI**
-<http://localhost:3000/graphiql>
+**GraphiQL UI** - <http://localhost:3000/graphiql>
 
-**Subscriptions websocket server**
-<ws://localhost:3001>
+**Subscriptions websocket server** - <ws://localhost:3001>
 
-**MongoDB**
-<mongodb://localhost:3002>
+**MongoDB** - <mongodb://localhost:3002>
 
 
 ### Production
