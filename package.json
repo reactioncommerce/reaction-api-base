@@ -1,7 +1,7 @@
 {
   "name": "skeletor",
   "version": "0.1.0",
-  "description": "Skeletor GraphQL API skeleton",
+  "description": "A GraphQL API skeleton",
   "author": "Jeremy Shimko <jeremy@reactioncommerce.com>",
   "license": "GPL-3.0",
   "repository": {
