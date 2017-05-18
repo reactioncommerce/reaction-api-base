@@ -6,8 +6,10 @@ function requireGraphQL(name) {
 }
 
 const typeDefs = [`
-  scalar ObjID
   scalar Date
+  scalar Time
+  scalar DateTime
+  scalar ObjID
   scalar JSON
 `];
 

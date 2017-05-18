@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
+import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
 
 // parser for JSON type
 function parseJSONLiteral(ast) {
@@ -28,25 +29,9 @@ function parseJSONLiteral(ast) {
 
 // define/export custom scalars
 export default {
-  Date: new GraphQLScalarType({
-    name: 'Date',
-    description: 'A Date object',
-    parseValue(value) {
-      return new Date(value);
-    },
-    serialize(value) {
-      return value.getTime();
-    },
-    parseLiteral(ast) {
-      switch (ast.kind) {
-        case Kind.INT:
-        case Kind.FLOAT:
-          return new Date(parseFloat(ast.value));
-        default:
-          return null;
-      }
-    }
-  }),
+  Date: GraphQLDate,
+  Time: GraphQLTime,
+  DateTime: GraphQLDateTime,
 
   ObjID: new GraphQLScalarType({
     name: 'ObjID',

@@ -1,12 +1,12 @@
 type User {
   _id: ObjID!
   email: String!
-  createdAt: Float!
-  updatedAt: Float!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type Query {
-  users(lastCreatedAt: Float, limit: Int): [User!]
+  users(lastCreatedAt: Date, limit: Int): [User!]
   user(_id: ObjID!): User
 }
 
