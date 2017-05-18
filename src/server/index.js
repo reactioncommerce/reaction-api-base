@@ -7,6 +7,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { MongoClient } from 'mongodb';
 import cors from 'cors';
 import passport from 'passport';
+import { parse } from 'url';
 import Logger from './logger';
 
 import typeDefs from '../schema';
@@ -19,6 +20,7 @@ import { pubsub, subscriptionManager } from './subscriptions';
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const {
+  ROOT_URL = 'http://localhost',
   PORT = 3000,
   WS_PORT = parseInt(PORT, 10) + 1,
   MONGO_PORT = parseInt(PORT, 10) + 2,
@@ -74,7 +76,7 @@ export default async function startServer() {
   }));
 
   app.listen(PORT, () => Logger.info(
-    `API Server is now running on http://localhost:${PORT}`
+    `API Server is now running on ${ROOT_URL}:${PORT}`
   ));
 
   // WebSocket server for subscriptions
@@ -84,7 +86,7 @@ export default async function startServer() {
   });
 
   websocketServer.listen(WS_PORT, () => Logger.info(
-    `Websocket server is now running on ws://localhost:${WS_PORT}`
+    `Websocket server is now running on ws://${parse(ROOT_URL).hostname}:${WS_PORT}`
   ));
 
   new SubscriptionServer({

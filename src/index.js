@@ -40,7 +40,7 @@ if (!MONGO_URL) {
   ]);
 
   mongod.run().then(() => {
-  	Logger.info(`Mongod is now running at mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`);
+  	Logger.info(`MongoDB is now available at mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`);
     startApp();
   }, (e) => {
     if (e === 'already running') {
