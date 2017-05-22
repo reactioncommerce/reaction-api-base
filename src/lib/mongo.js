@@ -12,7 +12,7 @@ export default class MongoCollection {
     this.context = context;
     this.pubsub = context.pubsub;
     this.collection = context.db.collection(type);
-    this.loader = new DataLoader(ids => findByIds(this.collection, ids));
+    this.loader = new DataLoader((ids) => findByIds(this.collection, ids));
   }
 
   async insert(doc) {
@@ -47,24 +47,30 @@ export default class MongoCollection {
     return result;
   }
 
-  async removeById(id) {
-    const result = await this.collection.remove({ _id: id });
-    this.loader.clear(id);
-    this.pubsub.publish(`${this.typeSingular}Removed`, id);
+  async remove(query) {
+    const result = await this.collection.findOneAndDelete(query);
+    this.loader.clear(result.value._id);
+    this.pubsub.publish(`${this.typeSingular}Removed`, result.value._id);
     return result;
   }
 
-  find(query = {}, options = { limit: 50 }) {
-    return this.collection.find(query).sort({ createdAt: 1 }).limit(options.limit).toArray();
+  async removeById(_id) {
+    const result = await this.collection.deleteOne({ _id });
+    this.loader.clear(_id);
+    this.pubsub.publish(`${this.typeSingular}Removed`, _id);
+    return result;
+  }
+
+  find(query = {}, options = { limit: 50, skip: 0, sort: { createdAt: 1 } }) {
+    const { limit, skip, sort } = options;
+    return this.collection.find(query).limit(limit).skip(skip).sort(sort).toArray();
+  }
+
+  findOne(query = {}, options = {}) {
+    return this.collection.findOne(query, options);
   }
 
   findOneById(id) {
     return this.loader.load(id);
-  }
-
-  all({ lastCreatedAt = 0, limit = 20 }) {
-    return this.collection.find({
-      createdAt: { $gt: lastCreatedAt }
-    }).sort({ createdAt: 1 }).limit(limit).toArray();
   }
 }
