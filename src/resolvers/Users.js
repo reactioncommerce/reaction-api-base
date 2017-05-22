@@ -1,7 +1,7 @@
 const resolvers = {
   Query: {
-    users(root, { lastCreatedAt, limit }, { Users }) {
-      return Users.all({ lastCreatedAt, limit });
+    users(root, { limit, skip, sort }, { Users }) {
+      return Users.find({ limit, skip, sort });
     },
 
     user(root, { _id }, { Users }) {

@@ -6,7 +6,7 @@ type User {
 }
 
 type Query {
-  users(lastCreatedAt: Date, limit: Int): [User!]
+  users(limit: Int, skip: Int, sort: JSON): [User!]
   user(_id: ObjID!): User
 }
 
