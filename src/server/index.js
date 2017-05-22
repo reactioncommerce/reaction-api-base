@@ -1,12 +1,12 @@
 import express from 'express';
-import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
-import { createServer } from 'http';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
 import bodyParser from 'body-parser';
-import { makeExecutableSchema } from 'graphql-tools';
-import { MongoClient } from 'mongodb';
 import cors from 'cors';
 import passport from 'passport';
+import { createServer } from 'http';
+import { MongoClient } from 'mongodb';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { makeExecutableSchema } from 'graphql-tools';
 import { parse } from 'url';
 import Logger from './logger';
 
