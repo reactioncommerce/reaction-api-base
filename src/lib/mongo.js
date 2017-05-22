@@ -17,8 +17,8 @@ export default class MongoCollection {
 
   async insert(doc) {
     const docToInsert = Object.assign({}, doc, {
-      createdAt: Date.now(),
-      updatedAt: Date.now()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     });
     const id = (await this.collection.insertOne(docToInsert)).insertedId;
     this.pubsub.publish(`${this.typeSingular}Inserted`, await this.findOneById(id));
@@ -28,7 +28,7 @@ export default class MongoCollection {
   async update(query, doc) {
     const result = await this.collection.update(query, {
       $set: Object.assign({}, doc, {
-        updatedAt: Date.now()
+        updatedAt: new Date().toISOString()
       })
     });
     this.loader.clear(id);
@@ -39,7 +39,7 @@ export default class MongoCollection {
   async updateById(id, doc) {
     const result = await this.collection.update({ _id: id }, {
       $set: Object.assign({}, doc, {
-        updatedAt: Date.now()
+        updatedAt: new Date().toISOString()
       })
     });
     this.loader.clear(id);

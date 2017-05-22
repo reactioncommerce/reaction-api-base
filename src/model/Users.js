@@ -19,8 +19,8 @@ class Users extends MongoCollection {
     const docToInsert = Object.assign({}, rest, {
       hash,
       email: email.toLowerCase(),
-      createdAt: Date.now(),
-      updatedAt: Date.now()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     });
 
     const id = (await this.collection.insertOne(docToInsert)).insertedId;

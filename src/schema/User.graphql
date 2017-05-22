@@ -1,8 +1,8 @@
 type User {
   _id: ObjID!
   email: String!
-  createdAt: Date!
-  updatedAt: Date!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
