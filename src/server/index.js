@@ -63,7 +63,7 @@ export default async function startServer() {
 
         return {
           schema,
-          context: Object.assign({ user }, req.context),
+          context: Object.assign({ user, userId: user && user._id }, req.context),
           debug: process.env.NODE_ENV !== 'production',
           formatError(e) { Logger.error(e); }
         };
