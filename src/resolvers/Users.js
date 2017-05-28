@@ -6,6 +6,9 @@ const resolvers = {
 
     user(root, { _id }, { Users }) {
       return Users.findOneById(_id);
+    },
+    currentUser(root, args, { Users, userId }) {
+      return Users.findOneById(userId);
     }
   },
   Mutation: {

@@ -1,13 +1,22 @@
 type User {
   _id: ObjID!
   email: String!
+  emails: [UserEmail]
+  username: String
+  roles: [String]
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type UserEmail {
+  address: String!
+  verified: Boolean!
 }
 
 type Query {
   users(limit: Int, skip: Int, sort: JSON): [User!]
   user(_id: ObjID!): User
+  currentUser: User
 }
 
 input CreateUserInput {
