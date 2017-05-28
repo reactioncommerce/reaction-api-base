@@ -15,7 +15,7 @@ export default class MongoCollection {
     this.loader = new DataLoader((ids) => findByIds(this.collection, ids));
   }
 
-  async insert(doc) {
+  async insertOne(doc) {
     const docToInsert = Object.assign({}, doc, {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
