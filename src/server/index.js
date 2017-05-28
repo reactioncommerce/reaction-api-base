@@ -7,6 +7,7 @@ import { MongoClient } from 'mongodb';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { makeExecutableSchema } from 'graphql-tools';
+import OpticsAgent from 'optics-agent';
 import { parse } from 'url';
 import Logger from './logger';
 
@@ -41,6 +42,11 @@ export default async function startServer() {
     next();
   });
 
+  if (process.env.OPTICS_API_KEY) {
+    OpticsAgent.instrumentSchema(schema);
+    app.use(OpticsAgent.middleware());
+  }
+
   authenticate(app);
 
   app.use('/graphql', (req, res, next) => {
@@ -61,9 +67,15 @@ export default async function startServer() {
           throw new Error('Query too large.');
         }
 
+        const context = Object.assign({
+          user,
+          userId: user && user._id,
+          opticsContext: process.env.OPTICS_API_KEY && OpticsAgent.context(req)
+        }, req.context);
+
         return {
           schema,
-          context: Object.assign({ user, userId: user && user._id }, req.context),
+          context,
           debug: process.env.NODE_ENV !== 'production',
           formatError(e) { Logger.error(e); }
         };
