@@ -3,8 +3,10 @@ import path from 'path';
 import startServer from './server';
 import Logger from './server/logger';
 
-// set the development database location
-const dbpath = path.join('../', 'db');
+if (process.env.NODE_ENV !== 'production') {
+  // load the .env file in development (if exists)
+  require('dotenv').load();
+}
 
 // get the db/app configs from the env
 const {
@@ -13,6 +15,9 @@ const {
   MONGO_DATABASE = 'api',
   MONGO_URL
 } = process.env;
+
+// set the development database location
+const dbpath = path.join('../', 'db');
 
 function startApp() {
   startServer()
