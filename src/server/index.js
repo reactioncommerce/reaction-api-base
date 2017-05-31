@@ -77,7 +77,11 @@ export default async function startServer() {
           schema,
           context,
           debug: process.env.NODE_ENV !== 'production',
-          formatError(e) { Logger.error(e); }
+          formatError: (e) => ({
+            message: e.message,
+            locations: e.locations,
+            path: e.path
+          })
         };
       })(req, res, next);
     })(req, res, next);
