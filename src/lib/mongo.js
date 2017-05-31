@@ -37,6 +37,7 @@ export default class MongoCollection {
       }));
     });
     const ids = (await this.collection.insertMany(docsToInsert)).insertedIds;
+    this.findManyById(ids);
     ids.forEach(async (id) => {
       this.pubsub.publish(
         `${this.typeSingular}Created`,
@@ -61,7 +62,7 @@ export default class MongoCollection {
   }
 
   async updateMany(query, updates) {
-    const docs = await this.find(query);
+    const docs = await this.find(query, { fields: { _id: 1 } });
     const result = await this.collection.updateMany(query, {
       $set: Object.assign({}, updates, {
         updatedAt: new Date().toISOString()
@@ -104,7 +105,7 @@ export default class MongoCollection {
   }
 
   async removeMany(filter, options) {
-    const docs = await this.find(filter, options);
+    const docs = await this.find(filter, { fields: { _id: 1 } });
     const result = await this.collection.deleteMany(filter, options);
     docs.forEach((d) => {
       this.loader.clear(d._id);
@@ -132,8 +133,9 @@ export default class MongoCollection {
   }
 
   findOne(query = {}, options = {}) {
-    if (query._id) {
-      return this.findOneById(query._id);
+    if (typeof query === 'string' || query && query._id) {
+      const _id = typeof query === 'string' ? query : query._id;
+      return this.findOneById(_id);
     }
     return this.collection.findOne(query, options);
   }
