@@ -29,6 +29,15 @@ const {
   MONGO_URL = `mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`
 } = process.env;
 
+const defaultGraphiQLQuery = `
+{
+  users {
+    _id
+    email
+    createdAt
+  }
+}
+`;
 
 export default async function startServer() {
   const db = await MongoClient.connect(MONGO_URL);
@@ -90,6 +99,7 @@ export default async function startServer() {
   app.use('/graphiql', graphiqlExpress({
     endpointURL: '/graphql',
     subscriptionsEndpoint: `ws://${parse(ROOT_URL).hostname}:${PORT}/subscriptions`,
+    query: defaultGraphiQLQuery
   }));
 
   // WebSocket server for subscriptions
