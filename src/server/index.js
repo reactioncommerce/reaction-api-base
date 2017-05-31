@@ -53,7 +53,7 @@ export default async function startServer() {
 
   if (process.env.OPTICS_API_KEY) {
     OpticsAgent.instrumentSchema(schema);
-    app.use(OpticsAgent.middleware());
+    app.use('/graphql', OpticsAgent.middleware());
   }
 
   authenticate(app);
