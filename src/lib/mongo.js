@@ -21,7 +21,10 @@ export default class MongoCollection {
       updatedAt: new Date().toISOString()
     });
     const id = (await this.collection.insertOne(docToInsert)).insertedId;
-    this.pubsub.publish(`${this.typeSingular}Inserted`, await this.findOneById(id));
+    this.pubsub.publish(
+      `${this.typeSingular}Created`,
+      { [`${this.typeSingular}Created`]: await this.findOneById(id) }
+    );
     return id;
   }
 
@@ -35,7 +38,10 @@ export default class MongoCollection {
     });
     const ids = (await this.collection.insertMany(docsToInsert)).insertedIds;
     ids.forEach(async (id) => {
-      this.pubsub.publish(`${this.typeSingular}Inserted`, await this.findOneById(id));
+      this.pubsub.publish(
+        `${this.typeSingular}Created`,
+        { [`${this.typeSingular}Created`]: await this.findOneById(id) }
+      );
     });
     return ids;
   }
@@ -47,7 +53,10 @@ export default class MongoCollection {
       })
     });
     this.loader.clear(result.value._id);
-    this.pubsub.publish(`${this.typeSingular}Updated`, await this.findOneById(result.value._id));
+    this.pubsub.publish(
+      `${this.typeSingular}Updated`,
+      { [`${this.typeSingular}Updated`]: await this.findOneById(result.value._id) }
+    );
     return result;
   }
 
@@ -58,9 +67,14 @@ export default class MongoCollection {
         updatedAt: new Date().toISOString()
       })
     });
-    docs.forEach(async (d) => {
-      this.loader.clear(d._id);
-      this.pubsub.publish(`${this.typeSingular}Updated`, await this.findOneById(d._id));
+    this.loader.clearAll();
+    const ids = docs.map((d) => d._id);
+    this.findManyById(ids);
+    ids.forEach(async (id) => {
+      this.pubsub.publish(
+        `${this.typeSingular}Updated`,
+        { [`${this.typeSingular}Updated`]: await this.findOneById(id) }
+      );
     });
     return result;
   }
@@ -72,14 +86,20 @@ export default class MongoCollection {
       })
     });
     this.loader.clear(_id);
-    this.pubsub.publish(`${this.typeSingular}Updated`, await this.findOneById(_id));
+    this.pubsub.publish(
+      `${this.typeSingular}Updated`,
+      { [`${this.typeSingular}Updated`]: await this.findOneById(_id) }
+    );
     return result;
   }
 
   async removeOne(filter, options) {
     const result = await this.collection.findOneAndDelete(filter, options);
     this.loader.clear(result.value._id);
-    this.pubsub.publish(`${this.typeSingular}Removed`, result.value._id);
+    this.pubsub.publish(
+      `${this.typeSingular}Removed`,
+      { [`${this.typeSingular}Removed`]: result.value._id }
+    );
     return result;
   }
 
@@ -87,8 +107,11 @@ export default class MongoCollection {
     const docs = await this.find(filter, options);
     const result = await this.collection.deleteMany(filter, options);
     docs.forEach((d) => {
-      this.pubsub.publish(`${this.typeSingular}Removed`, d._id);
       this.loader.clear(d._id);
+      this.pubsub.publish(
+        `${this.typeSingular}Removed`,
+        { [`${this.typeSingular}Removed`]: d._id }
+      );
     });
     return result;
   }
@@ -96,7 +119,10 @@ export default class MongoCollection {
   async removeById(_id) {
     const result = await this.collection.deleteOne({ _id });
     this.loader.clear(_id);
-    this.pubsub.publish(`${this.typeSingular}Removed`, _id);
+    this.pubsub.publish(
+      `${this.typeSingular}Removed`,
+      { [`${this.typeSingular}Removed`]: _id }
+    );
     return result;
   }
 

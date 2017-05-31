@@ -6,25 +6,25 @@ import { createServer } from 'http';
 import { MongoClient } from 'mongodb';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
-import { makeExecutableSchema } from 'graphql-tools';
+import { execute, subscribe } from 'graphql';
 import OpticsAgent from 'optics-agent';
 import { parse } from 'url';
-import Logger from './logger';
 
+import Logger from './logger';
+import loadModelsWithContext from '../model';
 import typeDefs from '../schema';
 import resolvers from '../resolvers';
-import loadModelsWithContext from '../model';
+import { pubsub } from './subscriptions';
 import authenticate from './authenticate';
 
-import { pubsub, subscriptionManager } from './subscriptions';
-
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+import Skeletor from '../lib/skeletor';
+const skeletor = new Skeletor({ typeDefs, resolvers });
+const schema = skeletor.getExecutableSchema();
 
 const {
-  ROOT_URL = 'http://localhost',
+  ROOT_URL = 'http://localhost:3000',
   PORT = 3000,
-  WS_PORT = parseInt(PORT, 10) + 1,
-  MONGO_PORT = parseInt(PORT, 10) + 2,
+  MONGO_PORT = parseInt(PORT, 10) + 1,
   MONGO_DATABASE = 'api',
   MONGO_URL = `mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`
 } = process.env;
@@ -84,32 +84,39 @@ export default async function startServer() {
   });
 
   app.use('/graphiql', graphiqlExpress({
-    endpointURL: '/graphql'
+    endpointURL: '/graphql',
+    subscriptionsEndpoint: `ws://${parse(ROOT_URL).hostname}:${PORT}/subscriptions`,
   }));
 
-  app.listen(PORT, () => Logger.info(
-    `API Server is now running on ${ROOT_URL}:${PORT}`
-  ));
-
   // WebSocket server for subscriptions
-  const websocketServer = createServer((request, response) => {
-    response.writeHead(404);
-    response.end();
-  });
+  const server = createServer(app);
 
-  websocketServer.listen(WS_PORT, () => Logger.info(
-    `Websocket server is now running on ws://${parse(ROOT_URL).hostname}:${WS_PORT}`
-  ));
+  server.listen(PORT, () => {
+    new SubscriptionServer.create({
+      schema,
+      execute,
+      subscribe,
 
-  new SubscriptionServer({
-    subscriptionManager,
-    // the onSubscribe function is called for every new subscription
-    // and we use it to set the GraphQL context for this subscription
-    onSubscribe(msg, params) {
-      return Object.assign({}, params, { context: Object.assign({}, context) });
-    }
-  }, {
-    server: websocketServer,
-    path: '/'
+      // the onOperation function is called for every new operation
+      // and we use it to set the GraphQL context for this operation
+      onOperation: (msg, params, socket) => {
+        return new Promise((resolve) => {
+          if (socket.upgradeReq) {
+            const paramsWithBaseContext = Object.assign({}, params, {
+              context: {
+                opticsContext: process.env.OPTICS_API_KEY && OpticsAgent.context(socket.upgradeReq)
+              }
+            });
+            return resolve(paramsWithBaseContext);
+          }
+        });
+      }
+    }, {
+      server,
+      path: '/subscriptions'
+    });
+
+    Logger.info(`API Server is now running on ${ROOT_URL}`);
+    Logger.info(`Websocket server is now running on ws://${parse(ROOT_URL).hostname}`);
   });
 }

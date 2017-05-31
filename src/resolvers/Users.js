@@ -1,3 +1,5 @@
+import { pubsub } from '../server/subscriptions';
+
 const resolvers = {
   Query: {
     users(root, { limit, skip, sort }, { Users }) {
@@ -27,9 +29,15 @@ const resolvers = {
     }
   },
   Subscription: {
-    userCreated: user => user,
-    userUpdated: user => user,
-    userRemoved: _id => _id
+    userCreated: {
+      subscribe: () => pubsub.asyncIterator('userCreated')
+    },
+    userUpdated: {
+      subscribe: () => pubsub.asyncIterator('userUpdated')
+    },
+    userRemoved: {
+      subscribe: () => pubsub.asyncIterator('userRemoved')
+    }
   }
 };
 
