@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 // get the db/app configs from the env
 const {
   PORT = 3000,
-  MONGO_PORT = parseInt(PORT, 10) + 2,
+  MONGO_PORT = parseInt(PORT, 10) + 1,
   MONGO_DATABASE = 'api',
   MONGO_URL
 } = process.env;
@@ -20,9 +20,7 @@ const {
 const dbpath = path.join('../', 'db');
 
 function startApp() {
-  startServer()
-    .then(() => Logger.info('Starting API server...'))
-    .catch((e) => Logger.error(e, 'Server startup error'));
+  startServer().catch((e) => Logger.error(e, 'Server startup error'));
 }
 
 // start a local development database if no MONGO_URL provided
@@ -45,7 +43,7 @@ if (!MONGO_URL) {
   ]);
 
   mongod.run().then(() => {
-  	Logger.info(`MongoDB is now available at mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`);
+  	Logger.info(`MongoDB is now running at mongodb://localhost:${MONGO_PORT}/${MONGO_DATABASE}`);
     startApp();
   }, (e) => {
     if (e === 'already running') {
