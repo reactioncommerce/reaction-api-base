@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import MongoCollection from '../lib/mongo';
+import Logger from '../server/logger';
 
 class Users extends MongoCollection {
 
@@ -8,7 +9,9 @@ class Users extends MongoCollection {
     const user = await this.collection.findOne({ email: email.toLowerCase() });
 
     if (user) {
-      throw new Error(`User with email ${email} already exists`);
+      const msg = `User with email ${email} already exists`;
+      Logger.error(msg);
+      throw new Error(msg);
     }
 
     // hash the password
