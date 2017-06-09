@@ -7,8 +7,8 @@ WORKDIR $APP_SOURCE_DIR
 
 COPY . $APP_SOURCE_DIR
 
-RUN $APP_SOURCE_DIR/docker/scripts/install.sh && \
-    $APP_SOURCE_DIR/docker/scripts/cleanup.sh
+RUN $APP_SOURCE_DIR/.docker/scripts/install.sh && \
+    $APP_SOURCE_DIR/.docker/scripts/cleanup.sh
 
 ENV NODE_ENV production
 
