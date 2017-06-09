@@ -75,3 +75,7 @@ Or better yet, let Docker build a lean production image for you in one command..
 If you are doing test builds regularly in development, you can use the development Docker build to speed your builds up.  It caches all of the dependencies on the first run and only needs to reinstall them if the `package.json` or `yarn.lock` changes.  After the first run, subsequent builds usually take less than 10 seconds because the only step that needs to happen is the Babel transpile.
 
 However, note that while this is technically a production build of the app code, this is NOT a lean Docker build.  All of the dev dependencies and OS build tools remain in the image, so it's usually at least 500MB larger than the lean Docker build above.  This is only intended to give you a way to quickly test that a production build works properly.  You should always use the production Docker build for your final distribution.
+
+## License
+
+Copyright © [MIT](./LICENSE.md)
