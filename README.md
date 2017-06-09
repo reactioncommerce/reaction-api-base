@@ -31,9 +31,9 @@ The following services should now be available:
 
 **GraphiQL UI** - <http://localhost:3000/graphiql>
 
-**Subscriptions websocket server** - <ws://localhost:3001>
+**Subscriptions websocket** - <ws://localhost:3000/subscriptions>
 
-**MongoDB** - <mongodb://localhost:3002>
+**MongoDB** - <mongodb://localhost:3001>
 
 
 ### Production
