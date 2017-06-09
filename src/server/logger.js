@@ -43,7 +43,7 @@ if (logglyToken && logglySubdomain) {
 
 // create default logger instance
 const Logger = bunyan.createLogger({
-  name: process.env.APP_NAME || 'Skeletor',
+  name: process.env.APP_NAME || 'API',
   streams
 });
 

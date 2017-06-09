@@ -17,9 +17,9 @@ import resolvers from '../resolvers';
 import { pubsub } from './subscriptions';
 import authenticate from './authenticate';
 
-import Skeletor from '../lib/skeletor';
-const skeletor = new Skeletor({ typeDefs, resolvers });
-const schema = skeletor.getExecutableSchema();
+import API from '../lib/api';
+const api = new API({ typeDefs, resolvers });
+const schema = api.getExecutableSchema();
 
 const {
   ROOT_URL = 'http://localhost:3000',

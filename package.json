@@ -1,12 +1,12 @@
 {
-  "name": "skeletor",
-  "version": "0.1.0",
-  "description": "A GraphQL API skeleton",
+  "name": "reaction-api-base",
+  "version": "0.2.0",
+  "description": "A GraphQL API base",
   "author": "Jeremy Shimko <jeremy@reactioncommerce.com>",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/skeletor.git"
+    "url": "git+https://github.com/reactioncommerce/reaction-api-base.git"
   },
   "engines": {
     "node": ">=6.0.0"

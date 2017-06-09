@@ -1,6 +1,6 @@
 
-skeletor:
-  image: reactioncommerce/skeletor:latest
+api:
+  image: reactioncommerce/reaction-api-base:latest
   ports:
     - 3000:3000
     - 3001:3001

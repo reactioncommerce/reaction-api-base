@@ -74,3 +74,6 @@ process.once('exit', function () {
     nodemon.emit('SIGINT');
   }
 });
+
+export { default as MongoCollection } from './lib/mongo';
+export { default as API } from './lib/api';

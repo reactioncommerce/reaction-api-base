@@ -2,7 +2,7 @@ import fs from 'fs';
 import _ from 'lodash';
 import { makeExecutableSchema } from 'graphql-tools';
 
-export default class Skeletor {
+export default class API {
 
   constructor({ typeDefs = [], resolvers = {} }) {
     this.schemas = typeDefs;
