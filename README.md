@@ -1,5 +1,5 @@
 
-# Reaction GraphQL API Base
+# GraphQL API Server Base
 
 A GraphQL API server base to get started with building GraphQL API's.
 
