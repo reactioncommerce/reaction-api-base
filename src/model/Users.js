@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import MongoCollection from '../lib/mongo';
-import Logger from '../server/logger';
+import { Logger } from '../server/logger';
 
 class Users extends MongoCollection {
 

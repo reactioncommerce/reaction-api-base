@@ -10,7 +10,7 @@ import { execute, subscribe } from 'graphql';
 import OpticsAgent from 'optics-agent';
 import { parse } from 'url';
 
-import Logger from './logger';
+import { Logger } from './logger';
 import loadModelsWithContext from '../model';
 import typeDefs from '../schema';
 import resolvers from '../resolvers';

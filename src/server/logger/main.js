@@ -1,7 +1,7 @@
-import { includes } from 'lodash';
+import _ from 'lodash';
 import bunyan from 'bunyan';
 import bunyanFormat from 'bunyan-format';
-import { Bunyan2Loggly } from 'bunyan-loggly';
+import Bunyan2Loggly from './loggly';
 
 /**
  * Global logging config
@@ -13,7 +13,7 @@ let level = process.env.LOG_LEVEL || 'INFO';
 
 level = level.toUpperCase();
 
-if (!includes(levels, level)) {
+if (!_.includes(levels, level)) {
   level = 'INFO';
 }
 
@@ -35,7 +35,7 @@ if (logglyToken && logglySubdomain) {
     stream: new Bunyan2Loggly({
       token: logglyToken,
       subdomain: logglySubdomain
-    })
+    }, process.env.LOGGLY_BUFFER_LENGTH || 1)
   };
   streams.push(logglyStream);
 }
