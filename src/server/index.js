@@ -131,6 +131,6 @@ export default async function startServer() {
     });
 
     Logger.info(`API Server is now running on ${ROOT_URL}`);
-    Logger.info(`Websocket server is now running on ws://${parse(ROOT_URL).hostname}/subscriptions`);
+    Logger.info(`Websocket server is now running on ws://${parse(ROOT_URL).hostname}:${PORT}/subscriptions`);
   });
 }
