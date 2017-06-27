@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import startServer from './server';
-import Logger from './server/logger';
+import { Logger } from './server/logger';
 
 if (process.env.NODE_ENV !== 'production') {
   // load the .env file in development (if exists)
