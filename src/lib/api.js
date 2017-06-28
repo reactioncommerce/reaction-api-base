@@ -18,8 +18,14 @@ export default class API {
   }
 
   requireGraphQL(name) {
-    const filename = require.resolve(name);
-    return fs.readFileSync(filename, 'utf8');
+    const file = require.resolve(name);
+    try {
+      return fs.readFileSync(file, 'utf8');
+    } catch (e) {
+      const msg = `Failed to load schema at path: ${file}`;
+      Logger.error(e, msg);
+      throw new Error(msg);
+    }
   }
 
   getExecutableSchema() {
