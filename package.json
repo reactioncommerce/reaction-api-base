@@ -13,6 +13,8 @@
   },
   "scripts": {
     "build": "rimraf dist && babel src -d dist --copy-files",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "prepublish": "npm run build",
     "serve": "NODE_ENV=production node dist/index.js",
     "start": "nodemon --watch src --ext js,graphql --exec 'npm run build && node dist/index.js'"
