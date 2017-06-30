@@ -25,6 +25,16 @@ class Users extends MongoCollection {
     // do the rest of the standard insert
     return super.insertOne(docToInsert);
   }
+
+  // async insertMany(users) {
+  //   // make sure this email doesn't already exist
+  //   const ids = [];
+  //   users.forEach(async (user) => {
+  //     ids.push((await this.insertOne(user)).insertedId);
+  //   });
+  //   console.log(ids);
+  //   return ids;
+  // }
 }
 
 export default Users;
