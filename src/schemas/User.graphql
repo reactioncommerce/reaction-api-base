@@ -35,7 +35,7 @@ type Mutation {
 }
 
 type Subscription {
-  userCreated: User
-  userUpdated: User
-  userRemoved: ObjID
+  userCreated(_id: ObjID): User
+  userUpdated(_id: ObjID): User
+  userRemoved(_id: ObjID): ObjID
 }

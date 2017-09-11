@@ -1,8 +1,9 @@
-import { pubsub } from '../server/subscriptions';
+import { withFilter } from 'graphql-subscriptions';
+import { pubsub } from '../lib/api';
 
 const resolvers = {
   Query: {
-    users(root, { limit, skip, sort }, { Users }) {
+    async users(root, { limit, skip, sort }, { Users }) {
       return Users.find({ limit, skip, sort });
     },
 
@@ -30,13 +31,28 @@ const resolvers = {
   },
   Subscription: {
     userCreated: {
-      subscribe: () => pubsub.asyncIterator('userCreated')
+      subscribe: withFilter(() => pubsub.asyncIterator('userCreated'), (payload, { _id }) => {
+        if (!!_id) {
+          return payload.userCreated._id === _id;
+        }
+        return !!payload.userCreated;
+      })
     },
     userUpdated: {
-      subscribe: () => pubsub.asyncIterator('userUpdated')
+      subscribe: withFilter(() => pubsub.asyncIterator('userUpdated'), (payload, { _id }) => {
+        if (!!_id) {
+          return payload.userUpdated._id === _id;
+        }
+        return !!payload.userUpdated;
+      })
     },
     userRemoved: {
-      subscribe: () => pubsub.asyncIterator('userRemoved')
+      subscribe: withFilter(() => pubsub.asyncIterator('userRemoved'), (payload, { _id }) => {
+        if (!!_id) {
+          return payload.userRemoved._id === _id;
+        }
+        return !!payload.userRemoved;
+      })
     }
   }
 };
