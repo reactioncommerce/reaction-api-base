@@ -1,11 +1,8 @@
-import _ from 'lodash';
 import scalars from './scalars';
 import userResolvers from './Users';
 
-const resolvers = {
-  ...scalars
+// core resolvers
+export default {
+  ...scalars,
+  ...userResolvers
 };
-
-_.merge(resolvers, userResolvers);
-
-export default resolvers;

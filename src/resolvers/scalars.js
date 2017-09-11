@@ -35,7 +35,7 @@ export default {
 
   ObjID: new GraphQLScalarType({
     name: 'ObjID',
-    description: 'Id String representation, based on Mongo Object Ids',
+    description: 'Id string representation of MongoDB Object Ids',
     parseValue(value) {
       return ObjectId(value);
     },

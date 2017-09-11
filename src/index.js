@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import startServer from './server';
+import API from './lib/api';
 import { Logger } from './server/logger';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -20,7 +20,7 @@ const {
 const dbpath = path.join('../', 'db');
 
 function startApp() {
-  startServer().catch((e) => Logger.error(e, 'Server startup error'));
+  API.startServer().catch((e) => Logger.error(e, 'Server startup error'));
 }
 
 // start a local development database if no MONGO_URL provided
@@ -75,5 +75,3 @@ process.once('exit', function () {
   }
 });
 
-export { default as MongoCollection } from './lib/mongo';
-export { default as API } from './lib/api';
