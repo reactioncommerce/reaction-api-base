@@ -59,7 +59,7 @@ Or better yet, let Docker build a lean production image for you in one command..
 **Production Build**
 
 ```sh
-./docker/build.sh
+.docker/build.sh
 
 # reactioncommerce/reaction-api-base:latest
 ```
@@ -67,7 +67,7 @@ Or better yet, let Docker build a lean production image for you in one command..
 **Development Build**
 
 ```sh
-./docker/build.sh --dev
+.docker/build.sh --dev
 
 # reactioncommerce/reaction-api-base:devel
 ```
