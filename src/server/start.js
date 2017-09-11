@@ -9,17 +9,9 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';
 import OpticsAgent from 'optics-agent';
 import { parse } from 'url';
-
 import { Logger } from './logger';
-import loadModelsWithContext from '../model';
-import typeDefs from '../schema';
-import resolvers from '../resolvers';
-import { pubsub } from './subscriptions';
 import authenticate from './authenticate';
-
 import API from '../lib/api';
-const api = new API({ typeDefs, resolvers });
-const schema = api.getExecutableSchema();
 
 const {
   ROOT_URL = 'http://localhost:3000',
@@ -47,9 +39,11 @@ export default async function startServer() {
   app.use(bodyParser.json());
 
   app.use((req, res, next) => {
-    req.context = loadModelsWithContext({ db, pubsub });
+    req.context = API.loadContext({ db });
     next();
   });
+
+  const schema = API.getExecutableSchema();
 
   if (process.env.OPTICS_API_KEY) {
     OpticsAgent.instrumentSchema(schema);
@@ -60,11 +54,15 @@ export default async function startServer() {
 
   app.use('/graphql', (req, res, next) => {
     passport.authenticate('jwt', { session: false }, (err, user) => {
-      // if (!user) {
-      //   res.status(403);
-      //   res.json({ error: 'Not authorized' });
-      //   return Logger.error('Not authorized');
-      // }
+      // option to enforce user authentication for GraphQL endpoint
+      if (process.env.AUTH_REQUIRED === 'true') {
+        if (!user) {
+          res.status(403);
+          res.json({ error: 'Not authorized' });
+          return Logger.error('Not authorized');
+        }
+      }
+
       graphqlExpress(() => {
         // Get the query, the same way express-graphql does it
         // https://github.com/graphql/express-graphql/blob/3fa6e68582d6d933d37fa9e841da5d2aa39261cd/src/index.js#L257
@@ -110,6 +108,11 @@ export default async function startServer() {
       schema,
       execute,
       subscribe,
+
+      // onConnect: (connectionParams) => {
+      //   console.log('onConnect');
+      //   console.log('connectionParams', connectionParams);
+      // },
 
       // the onOperation function is called for every new operation
       // and we use it to set the GraphQL context for this operation

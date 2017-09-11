@@ -1,14 +1,19 @@
 import DataLoader from 'dataloader';
 import findByIds from 'mongo-find-by-ids';
+import pluralize from 'pluralize';
 
 export default class MongoCollection {
 
-  constructor(type, context) {
-    if (!type || !context) {
-      throw new Error('MongoCollection constructor requires a type string and context object');
+  constructor(type, options = {}, context) {
+    if (!type) {
+      throw new Error('MongoCollection constructor requires a type');
+    }
+    if (!context) {
+      throw new Error('MongoCollection constructor requires a context object');
     }
     this.type = type;
-    this.typeSingular = type.slice(-1) === 's' ? type.slice(0, -1) : type;
+    this.typeSingular = pluralize.singular(type);
+    this.options = options;
     this.context = context;
     this.pubsub = context.pubsub;
     this.collection = context.db.collection(type);

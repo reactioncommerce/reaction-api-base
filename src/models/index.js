@@ -1,5 +1,8 @@
 import Users from './Users';
 
 export default {
-  Users
+  Users: {
+    collection: Users,
+    options: {}
+  }
 };
