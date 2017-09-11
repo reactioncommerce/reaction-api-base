@@ -2,8 +2,7 @@
 
 printf "\n[-] Installing OS dependencies...\n\n"
 
-apt-get update
-apt-get install -y --no-install-recommends build-essential python
+apk update && apk add --no-cache build-base
 
 printf "\n[-] Installing NPM dependencies...\n\n"
 
@@ -11,7 +10,7 @@ yarn
 
 printf "\n[-] Building app...\n\n"
 
-npm run build
+yarn run build
 
 printf "\n[-] Pruning build dependencies...\n\n"
 

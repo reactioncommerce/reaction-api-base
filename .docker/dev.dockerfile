@@ -5,7 +5,7 @@
 # than 500MB larger compared to the image from the production
 # Dockerfile in the root of the project.
 
-FROM node:7
+FROM node:8-alpine
 MAINTAINER Jeremy Shimko <jeremy@reactioncommerce.com>
 
 ENV APP_SOURCE_DIR /opt/src
@@ -19,7 +19,7 @@ RUN yarn
 
 # add the rest of the app and build it
 COPY . $APP_SOURCE_DIR
-RUN npm run build && yarn --prod
+RUN yarn run build && yarn --prod
 
 ENV NODE_ENV production
 

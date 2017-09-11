@@ -1,4 +1,4 @@
-FROM node:7-slim
+FROM node:8-alpine
 MAINTAINER Jeremy Shimko <jeremy@reactioncommerce.com>
 
 ENV APP_SOURCE_DIR /opt/src
