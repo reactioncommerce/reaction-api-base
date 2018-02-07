@@ -6,6 +6,7 @@ services:
       context: .
       args:
         NODE_ENV: "development"
+    command: [sh, -c, "yarn run build && yarn run start"]
     depends_on:
       - mongo
     environment:
@@ -14,7 +15,7 @@ services:
       - 3000:3000
     volumes:
       - api-yarn:/home/node/.cache/yarn
-      - .:/opt/src
+      - .:/opt/src:cached
 
   mongo:
     image: mongo:latest
