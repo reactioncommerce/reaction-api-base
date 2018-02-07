@@ -21,7 +21,7 @@ services:
     image: mongo:3.6
     command: mongod --storageEngine=wiredTiger
     ports:
-      - 27017:27017
+      - 27017
 
 volumes:
   api-yarn:
