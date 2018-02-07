@@ -3,7 +3,7 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import jwt from 'jwt-simple';
 import { ObjectId } from 'mongodb';
 import nodeify from 'nodeify';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const KEY = '0.7493999414687578';
 

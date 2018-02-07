@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import MongoCollection from '../lib/mongo';
 import { Logger } from '../server/logger';
 
