@@ -1,7 +1,8 @@
+# ARCHIVED: Demo GraphQL API
 
-# GraphQL API Server Base
-
-A GraphQL API server base to get started with building GraphQL API's.
+:notebook_with_decorative_cover: This project is archived and no longer
+maintained. It was an early experiment to create a simple, standalone GraphQL
+server. We have since included a GraphQL API directly in [core Reaction](https://github.com/reactioncommerce/reaction).
 
 ## Install
 
@@ -38,12 +39,13 @@ The following services should now be available:
 * **GraphiQL UI** - <http://localhost:3000/graphiql>
 * **Subscriptions websocket** - <ws://localhost:3000/subscriptions>
 
-
 #### File-Reloading
+
 The project code can be edited on the host machine. The process will be
 reloaded when code is changed.
 
 #### Updating Dependencies
+
 In development, you will need to run the following command when the
 `package.json` file is modified:
 
