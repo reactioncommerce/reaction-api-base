@@ -1,15 +1,27 @@
+version: '3'
 
-api:
-  image: reactioncommerce/reaction-api-base:latest
-  ports:
-    - 3000:3000
-  links:
-    - mongo
-  environment:
-    MONGO_URL: "mongodb://mongo:27017/api"
+services:
+  api:
+    build:
+      context: .
+      args:
+        NODE_ENV: "development"
+    command: [sh, -c, "yarn run build && yarn run start"]
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: "mongodb://mongo:27017/api"
+    ports:
+      - 3000:3000
+    volumes:
+      - api-yarn:/home/node/.cache/yarn
+      - .:/opt/src:cached
 
-mongo:
-  image: mongo:latest
-  ports:
-    - 27017:27017  
-  command: mongod --storageEngine=wiredTiger
+  mongo:
+    image: mongo:3.6
+    command: mongod --storageEngine=wiredTiger
+    ports:
+      - 27017
+
+volumes:
+  api-yarn:
